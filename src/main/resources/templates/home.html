@@ -5,14 +5,11 @@
     <title>Home</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!--    <link rel="icon" href="../static/img/map-icon.png">-->
     <link rel="icon" th:href="@{/img/map-icon.png}">
 
     <!-- Bootstrap core CSS -->
-    <!--    <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">-->
     <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
 
-    <!--    <link href="../static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">-->
     <link th:href="@{/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
     <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet'
           type='text/css'>
@@ -20,7 +17,6 @@
           rel='stylesheet' type='text/css'>
 
     <!-- Custom styles for this template -->
-    <!--    <link href="../static/css/clean-blog.min.css" rel="stylesheet">-->
     <link th:href="@{/css/clean-blog.min.css}" rel="stylesheet"/>
 
 </head>
@@ -40,6 +36,27 @@
         </div>
     </div>
 </header>
+
+<div class="container">
+    <div class="row">
+        <div th:if="${top_objects_list}"  class="col-lg-8 col-md-10 mx-auto">
+            <h1>Best places:</h1>
+
+            <div class="post-preview" th:each="obj: ${top_objects_list}">
+                <a th:href="${obj.getAbsoluteUrl()}">
+                    <h2 class="post-title" th:text="${obj.getName()}">Name</h2>
+                    <h3 class="post-subtitle" style="text-align: justify;" th:text="${obj.getDescription()}">Description</h3>
+                    <p th:if="" class="post-meta" th:text="${obj.getAddress()}">Address</p>
+                </a>
+            </div>
+        </div>
+        <div th:unless="${top_objects_list}"  class="col-lg-8 col-md-10 mx-auto">
+            <h2 style="text-align: center">Uups...</h2>
+            <h4 style="text-align: center">There are no available places at this moment.</h4>
+        </div>
+    </div>
+</div>
+
 
 <div th:insert="fragments/footer :: footer"></div>
 </body>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>About</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="icon" th:href="@{/img/map-icon.png}">
+
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+
+    <link th:href="@{/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet'
+          type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
+          rel='stylesheet' type='text/css'>
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/clean-blog.min.css}" rel="stylesheet"/>
+
+</head>
+<body>
+<div th:insert="fragments/header :: header"></div>
+
+<header class="masthead" th:style="'background-image: url(' + @{/img/about-bg.jpg} +')'">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="page-heading">
+                    <h1>About PlanMyTrip</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+            <p style="text-align: justify">PlanMyTrip – платформа для создания интерактивных карт
+                городских достопримечательностей усилиями пользователей. Надеемся, что наш сервис будет интересен не
+                только
+                путешественникам, но и гражданам, которым интересно узнать историю родного города, взглянуть на
+                привычные места с другой стороны или поделиться своими знаниями с окружающими.
+            </p>
+            <p style="text-align: justify">Объединив возможности интерактивных карт со стремлением активных граждан к
+                привлечению внимания к
+                объектам культуры мы стремимся оказать положительное влияние на развитие инфраструктуры страны и
+                развитию туристической деятельности.</p>
+        </div>
+    </div>
+</div>
+
+<div th:insert="fragments/footer :: footer"></div>
+</body>
+</html>
