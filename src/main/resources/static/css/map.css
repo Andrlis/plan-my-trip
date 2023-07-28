@@ -1,0 +1,45 @@
+#mapNav {
+    border-bottom: 1px solid #e9ecef;
+    background-color: white;
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+#mapNav .navbar-brand {
+    font-weight: 800;
+    color: #343a40;
+}
+
+#mapNav .navbar-toggler {
+    font-size: 12px;
+    font-weight: 800;
+    padding: 13px;
+    text-transform: uppercase;
+    color: #343a40;
+}
+
+#mapNav .navbar-nav > li.nav-item > a {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.map-footer{
+    padding: 0 0 0;
+}
+
+footer .map-list-inline {
+    margin: 0;
+    padding: 0;
+}
+
+footer .map-copyright {
+    font-size: 14px;
+    margin-bottom: 0;
+    text-align: center;
+}
+
+.map-container {
+    height: 85%;
+    width: 100%;
+}

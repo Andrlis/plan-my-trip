@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!--    <link rel="icon" href="../static/img/map-icon.png">-->
+    <link rel="icon" th:href="@{/img/map-icon.png}">
+
+    <!-- Bootstrap core CSS -->
+    <!--    <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">-->
+    <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!--    <link href="../static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">-->
+    <link th:href="@{/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet'
+          type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
+          rel='stylesheet' type='text/css'>
+
+    <!-- Custom styles for this template -->
+    <!--    <link href="../static/css/clean-blog.min.css" rel="stylesheet">-->
+    <link th:href="@{/css/clean-blog.min.css}" rel="stylesheet"/>
+
+</head>
+<body>
+<div th:insert="fragments/header :: header"></div>
+
+<header class="masthead" th:style="'background-image: url(' + @{/img/index-bg.jpg} +')'">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="site-heading">
+                    <h1>PlanMyTrip</h1>
+                    <span class="subheading">PlanMyTrip - build yours amazing journey!</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div th:insert="fragments/footer :: footer"></div>
+</body>
+</html>
