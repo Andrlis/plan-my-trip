@@ -39,18 +39,18 @@
 
 <div class="container">
     <div class="row">
-        <div th:if="${top_objects_list}"  class="col-lg-8 col-md-10 mx-auto">
+        <div th:if="${top_sights_list}"  class="col-lg-8 col-md-10 mx-auto">
             <h1>Best places:</h1>
 
-            <div class="post-preview" th:each="obj: ${top_objects_list}">
-                <a th:href="${obj.getAbsoluteUrl()}">
-                    <h2 class="post-title" th:text="${obj.getName()}">Name</h2>
-                    <h3 class="post-subtitle" style="text-align: justify;" th:text="${obj.getDescription()}">Description</h3>
-                    <p th:if="" class="post-meta" th:text="${obj.getAddress()}">Address</p>
+            <div class="post-preview" th:each="sight: ${top_sights_list}">
+                <a th:href="${sight.getAbsoluteUrl()}">
+                    <h2 class="post-title" th:text="${sight.getName()}">Name</h2>
+                    <h3 class="post-subtitle" style="text-align: justify;" th:text="${sight.getDescription()}">Description</h3>
+                    <p th:if="" class="post-meta" th:text="${sight.getAddress()}">Address</p>
                 </a>
             </div>
         </div>
-        <div th:unless="${top_objects_list}"  class="col-lg-8 col-md-10 mx-auto">
+        <div th:unless="${top_sights_list}"  class="col-lg-8 col-md-10 mx-auto">
             <h2 style="text-align: center">Uups...</h2>
             <h4 style="text-align: center">There are no available places at this moment.</h4>
         </div>
