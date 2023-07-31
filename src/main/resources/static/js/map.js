@@ -14,7 +14,7 @@ navigator.geolocation.getCurrentPosition(function (position) {
 function inicialize_map(lat, lng){
 
     var cp_map = L.map('mapid').setView([lat, lng], 12);
-        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+        L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token={accessToken}', {
             minZoom: 3,
             attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
                 '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
@@ -24,7 +24,7 @@ function inicialize_map(lat, lng){
         }).addTo(cp_map);
 
     var objectIcon = L.icon({
-    iconUrl: '/static/citypoints/img/map-pin.png',
+    iconUrl: '/img/map-pin.png',
     iconSize: [35, 35], // size of the icon
     //shadowSize:   [50, 64], // size of the shadow
     iconAnchor: [17, 35], // point of the icon which will correspond to marker's location
