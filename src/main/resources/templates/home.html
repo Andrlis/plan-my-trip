@@ -46,7 +46,7 @@
                 <a th:href="${sight.getAbsoluteUrl()}">
                     <h2 class="post-title" th:text="${sight.getName()}">Name</h2>
                     <h3 class="post-subtitle" style="text-align: justify;" th:text="${sight.getDescription()}">Description</h3>
-                    <p th:if="" class="post-meta" th:text="${sight.getAddress()}">Address</p>
+                    <p th:if="${sight.getAddress()}" class="post-meta" th:text="${sight.getAddress()}">Address</p>
                 </a>
             </div>
         </div>

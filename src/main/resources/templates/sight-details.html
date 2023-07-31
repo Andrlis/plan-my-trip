@@ -31,7 +31,7 @@
                 <div class="post-heading">
                     <h1 style="text-align: center" th:text="${sight.getName()}">Sight name</h1>
                     <h2 class="subheading" style="text-align: center" th:text="'Type: ' + ${sight.getType()}">Type</h2>
-                    <p th:if="" class="post-meta" th:text="${sight.getAddress()}">Address</p>
+                    <p th:if="${sight.getAddress()}" class="post-meta" th:text="${sight.getAddress()}">Address</p>
                 </div>
             </div>
         </div>
@@ -43,25 +43,23 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-md-10 mx-auto">
-                <p style="text-align: justify">{{ object.description }}</p>
-
-                {% for resource in object.resource_set.all|dictsort:"order" %}
-                {% if resource.resource_type == 'TXT' %}
-                <h3>{{ resource.title }}</h3>
-                <p style="text-align: justify">{{ resource.text_value }}</p>
-                {% elif resource.resource_type == 'IMG' %}
-                <img class="img-fluid"
-                     style="margin-left: auto; margin-right: auto; width: 80%; display: block"
-                     src={{ resource.image_value.url }}>
-                {% else %}
-                <a href={{ resource.url_value }}>{{ object.name }}</a>
-                {% endif %}
-                {% endfor %}
+                <p style="text-align: justify" th:text="${sight.getDescription()}">Description</p>
+                <div th:each="resource: ${sight.getResources()}">
+                    <!--                    {% if resource.resource_type == 'TXT' %}-->
+                    <div th:if="${resource.getTitle()} == 'TXT'">
+                        <h3 th:text="${resource.getTitle()}">ResourceTitle</h3>
+                        <p style="text-align: justify" th:text="${resource.getTextValue()}">ResourceTextValue</p>
+                    </div>
+                    <!--                    {% elif resource.resource_type == 'IMG' %}-->
+                    <img th:if="${resource.getTitle()} == 'IMG'" class="img-fluid"
+                         style="margin-left: auto; margin-right: auto; width: 80%; display: block"
+                         th:src="${resource.getImage()}">
+                    <a th:if="${resource.getTitle()} == 'URL'" th:href="${resource.getURL()}">ResourceURL</a>
+                </div>
             </div>
         </div>
     </div>
 </article>
-
 
 
 <div th:insert="fragments/footer :: footer"></div>
