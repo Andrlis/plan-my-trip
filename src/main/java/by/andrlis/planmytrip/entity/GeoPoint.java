@@ -6,16 +6,13 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "users")
 @Getter
 @Setter
-public class User {
+public class GeoPoint {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private String username;
-    private String password;
-    private String email;
-    private UserRole role;
+    private String latitude;
+    private String longitude;
+
 }

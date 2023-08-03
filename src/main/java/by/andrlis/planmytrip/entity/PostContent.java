@@ -6,16 +6,18 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "users")
 @Getter
 @Setter
-public class User {
+public class PostContent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private String username;
-    private String password;
-    private String email;
-    private UserRole role;
+
+    @ManyToOne
+    private Post post;
+
+    @OneToOne
+    private ContentSource contentSource;
+
+    private Integer orderNumber;
 }
