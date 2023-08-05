@@ -3,21 +3,19 @@ package by.andrlis.planmytrip.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
-@Table(name = "users")
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class User {
+public class Country {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private String username;
-    private String password;
-    private String email;
-    private UserRole role;
+    @OneToMany
+    private List<City> cities;
 }

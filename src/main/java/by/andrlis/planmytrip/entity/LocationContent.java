@@ -5,19 +5,20 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "users")
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class User {
+public class LocationContent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private String username;
-    private String password;
-    private String email;
-    private UserRole role;
+    @ManyToOne
+    private Location post;
+
+    @OneToOne
+    private ContentSource contentSource;
+
+    private Integer orderNumber;
 }
