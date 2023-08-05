@@ -1,14 +1,16 @@
 package by.andrlis.planmytrip.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Location {
 
     @Id
@@ -20,5 +22,5 @@ public class Location {
     @ManyToOne
     private GeoPoint geoPoint;
     @OneToMany
-    private ArrayList<LocationContent> locationContentItems;
+    private List<LocationContent> locationContentItems;
 }

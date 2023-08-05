@@ -1,14 +1,16 @@
 package by.andrlis.planmytrip.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,11 +22,11 @@ public class Post {
     private User author;
 
     @ManyToMany
-    private ArrayList<Location> locations;
+    private List<Location> locations;
 
     @OneToMany
-    private ArrayList<PostContent> postContentItems;
+    private List<PostContent> postContentItems;
 
     @OneToMany
-    private ArrayList<Comment> comments;
+    private List<Comment> comments;
 }
