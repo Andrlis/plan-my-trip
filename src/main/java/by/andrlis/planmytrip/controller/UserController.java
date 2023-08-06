@@ -20,4 +20,8 @@ public class UserController {
         return "authentication";
     }
 
+    @GetMapping("/register")
+    public String showRegistrationPage(){
+        return "registration";
+    }
 }
