@@ -15,4 +15,9 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    @GetMapping("/login")
+    public String showAuthenticationPage(){
+        return "authentication";
+    }
+
 }

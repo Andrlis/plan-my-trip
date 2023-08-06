@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Authentication</title>
+    <link rel="icon" th:href="@{/img/map-icon.png}">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+
+    <link th:href="@{/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet'
+          type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
+          rel='stylesheet' type='text/css'>
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/clean-blog.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/map.css}" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light" id="mapNav">
+    <div th:replace="fragments/header :: header"></div>
+</nav>
+
+<div class="row justify-content-center">
+    <div class="col-4">
+
+        <!--    <form th:action="@{/user/login}" method="post" th:object="${newLoginUser}">-->
+
+        <!--        <p class="fs-6"></p>-->
+
+        <!--        <div class="mb-3">-->
+        <!--            <label for="Email" class="form-label">Email</label>-->
+        <!--            <input type="email" th:field="*{email}" placeholder="Email" class="form-control" id="Email">-->
+        <!--            <span th:errors="*{email}" class="alert alert-danger" role="alert"></span>-->
+        <!--        </div>-->
+
+        <!--        <div class="mb-3">-->
+        <!--            <label for="Password" class="form-label">Password</label>-->
+        <!--            <input type="password" th:field="*{password}" placeholder="Password" class="form-control" id="Password">-->
+        <!--            <span th:errors="*{password}" class="alert alert-danger" role="alert"></span>-->
+        <!--        </div>-->
+
+        <!--        <div class="d-grid gap-2 col-6 mx-auto">-->
+        <!--            <button class="btn btn-primary" type="submit">Log In</button>-->
+        <!--        </div>-->
+
+        <!--        <h1 th:text="${loginInvalid}"></h1>-->
+
+        <!--        <p class="fs-6"></p>-->
+
+        <!--        <p class="text-body-secondary">-->
+        <!--            Don`t have an account? <a href="/user/reg">Sign up</a>-->
+        <!--        </p>-->
+        <!--    </form>-->
+        <form th:action="@{/user/login}" method="post">
+
+            <p class="fs-6"></p>
+
+            <div class="mb-3">
+                <label for="Email" class="form-label">Email</label>
+                <input type="email" placeholder="Email" class="form-control" id="Email">
+                <span class="alert alert-danger" role="alert"></span>
+            </div>
+
+            <div class="mb-3">
+                <label for="Password" class="form-label">Password</label>
+                <input type="password" placeholder="Password" class="form-control" id="Password">
+                <span class="alert alert-danger" role="alert"></span>
+            </div>
+
+            <div class="d-grid gap-2 col-6 mx-auto">
+                <button class="btn btn-primary" type="submit">Log In</button>
+            </div>
+
+            <h1 th:text="${loginInvalid}"></h1>
+
+            <p class="fs-6"></p>
+
+            <p class="text-body-secondary">
+                Don`t have an account? <a href="/user/reg">Sign up</a>
+            </p>
+        </form>
+    </div>
+</div>
+
+<div th:insert="fragments/footer :: footer"></div>
+</body>
+</html>
