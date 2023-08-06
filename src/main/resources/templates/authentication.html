@@ -26,60 +26,27 @@
     <div th:replace="fragments/header :: header"></div>
 </nav>
 
-<div class="row justify-content-center">
-    <div class="col-4">
-
-        <!--    <form th:action="@{/user/login}" method="post" th:object="${newLoginUser}">-->
-
-        <!--        <p class="fs-6"></p>-->
-
-        <!--        <div class="mb-3">-->
-        <!--            <label for="Email" class="form-label">Email</label>-->
-        <!--            <input type="email" th:field="*{email}" placeholder="Email" class="form-control" id="Email">-->
-        <!--            <span th:errors="*{email}" class="alert alert-danger" role="alert"></span>-->
-        <!--        </div>-->
-
-        <!--        <div class="mb-3">-->
-        <!--            <label for="Password" class="form-label">Password</label>-->
-        <!--            <input type="password" th:field="*{password}" placeholder="Password" class="form-control" id="Password">-->
-        <!--            <span th:errors="*{password}" class="alert alert-danger" role="alert"></span>-->
-        <!--        </div>-->
-
-        <!--        <div class="d-grid gap-2 col-6 mx-auto">-->
-        <!--            <button class="btn btn-primary" type="submit">Log In</button>-->
-        <!--        </div>-->
-
-        <!--        <h1 th:text="${loginInvalid}"></h1>-->
-
-        <!--        <p class="fs-6"></p>-->
-
-        <!--        <p class="text-body-secondary">-->
-        <!--            Don`t have an account? <a href="/user/reg">Sign up</a>-->
-        <!--        </p>-->
-        <!--    </form>-->
+<div class="col-lg-8 col-md-10 mx-auto offset-md-4 mt-3 align-items-center">
+    <div class="card">
         <form th:action="@{/user/login}" method="post">
 
-            <p class="fs-6"></p>
-
-            <div class="mb-3">
-                <label for="Email" class="form-label">Email</label>
+            <div class="input-group mb-3 p-3">
+<!--                <label for="Email" class="input-group-text">Email</label>-->
                 <input type="email" placeholder="Email" class="form-control" id="Email">
-                <span class="alert alert-danger" role="alert"></span>
+<!--                <span class="alert alert-danger" role="alert"></span>-->
             </div>
 
-            <div class="mb-3">
-                <label for="Password" class="form-label">Password</label>
+            <div class="input-group mb-3 p-3">
+<!--                <label for="Password" class="input-group-text">Password</label>-->
                 <input type="password" placeholder="Password" class="form-control" id="Password">
-                <span class="alert alert-danger" role="alert"></span>
+<!--                <span class="alert alert-danger" role="alert"></span>-->
             </div>
 
-            <div class="d-grid gap-2 col-6 mx-auto">
+            <div class="d-grid mb-3 p-3">
                 <button class="btn btn-primary" type="submit">Log In</button>
             </div>
 
             <h1 th:text="${loginInvalid}"></h1>
-
-            <p class="fs-6"></p>
 
             <p class="text-body-secondary">
                 Don`t have an account? <a href="/user/register">Sign up</a>
