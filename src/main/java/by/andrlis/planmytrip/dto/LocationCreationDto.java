@@ -13,6 +13,7 @@ public class LocationCreationDto {
     private String longitude;
     private String category;
     private String newCategory;
+    private String newCategoryDescription;
     private String country;
     private String newCountry;
     private String city;

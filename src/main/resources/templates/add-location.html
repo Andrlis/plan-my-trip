@@ -61,8 +61,13 @@
                                             th:text="${i.getTitle()}"></option>
                                     <option value="Other">Other</option>
                                 </select>
-                                <input type="text" id="new-category" class="form-control form-control-lg"
-                                       placeholder="New category name" th:field="*{newCategory}"/>
+                                <div class="p-2 mb-2" id="category-creation">
+                                    <input type="text" id="new-category" class="form-control form-control-lg"
+                                           placeholder="New category name" th:field="*{newCategory}"/>
+                                    <input type="text" id="new-category-description"
+                                           class="form-control form-control-lg"
+                                           placeholder="New category description" th:field="*{newCategoryDescription}"/>
+                                </div>
                                 <span th:errors="*{category}" class="alert alert-danger" role="alert"></span>
                             </div>
                             <div class="form-group p-2 mb-4">
@@ -126,7 +131,7 @@
 <script>
     $(document).ready(function () {
         if ($('#category option').length > 1) {
-            $('#new-category').hide();
+            $('#category-creation').hide();
         }
         if ($('#country option').length > 1) {
             $('#new-country').hide();
@@ -137,9 +142,9 @@
     });
     $('#category').on('change', function () {
         if ($(this).val() !== 'Other') {
-            $('#new-category').hide();
+            $('#category-creation').hide();
         } else {
-            $('#new-category').show();
+            $('#category-creation').show();
         }
     });
     $('#country').on('change', function () {
