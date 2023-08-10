@@ -39,6 +39,10 @@ public class LocationService {
         return cityRepository.findAll();
     }
 
+    public List<Location> getAllLocations(){
+        return locationRepository.findAll();
+    }
+
     public void addLocation(LocationCreationDto locationCreationDto) {
 
         LocationCategory locationCategory = null;
@@ -101,6 +105,7 @@ public class LocationService {
         Location location = Location.builder()
                 .name(locationCreationDto.getName())
                 .description(locationCreationDto.getDescription())
+                .address(locationCreationDto.getAddress())
                 .category(locationCategory)
                 .geoPoint(geoPoint)
                 .country(country)

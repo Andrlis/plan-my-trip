@@ -47,7 +47,7 @@ public class UserController {
 
         if (byUsername.isPresent()) {
             User user = byUsername.get();
-            session.setAttribute("user", user);
+            session.setAttribute("sessionUser", user);
             return "redirect:/";
         } else {
             model.addAttribute("errorLogin", "Wrong username or password");

@@ -9,6 +9,7 @@ public class LocationCreationDto {
 
     private String name;
     private String description;
+    private String address;
     private String latitude;
     private String longitude;
     private String category;

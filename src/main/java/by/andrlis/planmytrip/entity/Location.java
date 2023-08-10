@@ -20,6 +20,7 @@ public class Location {
     @OneToOne
     private LocationCategory category;
     private String description;
+    private String address;
     @ManyToOne
     private GeoPoint geoPoint;
     @OneToMany

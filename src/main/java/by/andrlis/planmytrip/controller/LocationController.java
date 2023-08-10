@@ -3,6 +3,7 @@ package by.andrlis.planmytrip.controller;
 import by.andrlis.planmytrip.dto.LocationCreationDto;
 import by.andrlis.planmytrip.entity.City;
 import by.andrlis.planmytrip.entity.Country;
+import by.andrlis.planmytrip.entity.Location;
 import by.andrlis.planmytrip.entity.LocationCategory;
 import by.andrlis.planmytrip.service.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,5 +41,12 @@ public class LocationController {
     public String addLocation(LocationCreationDto locationCreationDto){
         locationService.addLocation(locationCreationDto);
         return "redirect:/";
+    }
+
+    @GetMapping("/list")
+    public String showLocationsList(Model model){
+        List<Location> locations = locationService.getAllLocations();
+        model.addAttribute("locationsList", locations);
+        return "locations";
     }
 }
