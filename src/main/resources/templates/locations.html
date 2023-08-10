@@ -49,14 +49,13 @@
                     <h3 class="post-subtitle" style="text-align: justify;" th:text="${i.getDescription()}">
                         Description
                     </h3>
-<!--                    {% if object.geo_object.address is not null %}-->
-<!--                    <p class="post-meta">{{ object.geo_object.address }}</p>-->
-<!--                    {% endif %}-->
+                    <!--                    {% if object.geo_object.address is not null %}-->
+                    <!--                    <p class="post-meta">{{ object.geo_object.address }}</p>-->
+                    <!--                    {% endif %}-->
                 </a>
             </div>
-
         </div>
-        <div th:unless="${locationsList}"  class="col-lg-8 col-md-10 mx-auto">
+        <div th:unless="${locationsList}" class="col-lg-8 col-md-10 mx-auto">
             <h2 style="text-align: center">Uups...</h2>
             <h4 style="text-align: center">There are no available places at this moment.</h4>
         </div>
@@ -64,6 +63,32 @@
             <a class="btn btn-primary" href="/location/add">Add location</a>
         </div>
     </div>
+    <nav aria-label="Pagination" th:if="${totalPages > 0}">
+        <ul class="pagination pagination-sm justify-content-center pg-dark">
+            <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                <a th:replace="fragments/locations-paging :: paging(1, '<<', 'First Page')"></a>
+            </li>
+            <li class="page-item font-weight-bold" th:classappend="${currentPage == 1} ? 'disabled'">
+                <a th:replace="fragments/locations-paging :: paging(${currentPage - 1}, 'Prev', 'Previous Page')"></a>
+            </li>
+            <li class="page-item disabled" th:if="${currentPage - 2 > 1}">
+                <a class="page-link" href="#">...</a>
+            </li>
+            <li class="page-item" th:classappend="${page == currentPage} ? 'active'"
+                th:each="page : ${#numbers.sequence(currentPage > 2 ? currentPage - 2 : 1, currentPage + 2 < totalPages ? currentPage + 2 : totalPages)}">
+                <a th:replace="fragments/locations-paging :: paging(${page}, ${page}, 'Page ' + ${page})"></a>
+            </li>
+            <li class="page-item disabled" th:if="${currentPage + 2 < totalPages}">
+                <a class="page-link" href="#">...</a>
+            </li>
+            <li class="page-item font-weight-bold" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                <a th:replace="fragments/locations-paging :: paging(${currentPage + 1},'Next', 'Next Page')"></a>
+            </li>
+            <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                <a th:replace="fragments/locations-paging :: paging(${totalPages}, '>>', 'Last Page')"></a>
+            </li>
+        </ul>
+    </nav>
 </div>
 
 
