@@ -39,6 +39,43 @@
 </header>
 
 <div class="container">
+    <div class="row justify-content-center align-items-center mx-auto">
+        <div id="filter-panel" class="collapse filter-panel">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form th:action="@{/location/list}" id="searchForm">
+                        <div class="form-group d-flex m-2 p-2">
+                            <i class="fa fa-search align-self-center mr-2"></i>
+                            <select class="form-select form-control align-self-center mr-2"
+                                    id="category" th:name="category">
+                                <option disabled selected value>Category</option>
+                                <option th:each="i : ${categories}" th:value="${i.getTitle()}"
+                                        th:text="${i.getTitle()}"></option>
+                            </select>
+                            <select class="form-select form-control align-self-center mr-2"
+                                    id="country" th:name="country">
+                                <option disabled selected value>Country</option>
+                                <option th:each="i : ${countries}" th:value="${i.getName()}"
+                                        th:text="${i.getName()}"></option>
+                            </select>
+                            <select th:each="country : ${countries}" th:style="'display: none'" class="form-select form-control align-self-center mr-2"
+                                    th:name="city" th:id="city + ${country.getName()}">
+                                <option disabled selected value>City</option>
+                                <option th:each="i : ${country.getCities()}" th:value="${i.getName()}"
+                                        th:text="${i.getName()}"></option>
+                            </select>
+                            <button id="btnClear" class="btn btn-info btn-sm mr-2">Clear</button>
+                            <button type="submit" class="btn btn-secondary btn-sm">Search</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#filter-panel">
+            <span class="glyphicon glyphicon-cog"></span> Advanced Search
+        </button>
+    </div>
+
     <div class="row">
         <div th:if="${locationsList}" class="col-lg-8 col-md-10 mx-auto">
             <div th:each="i : ${locationsList}" class="post-preview">
@@ -49,9 +86,7 @@
                     <h3 class="post-subtitle" style="text-align: justify;" th:text="${i.getDescription()}">
                         Description
                     </h3>
-                    <!--                    {% if object.geo_object.address is not null %}-->
-                    <!--                    <p class="post-meta">{{ object.geo_object.address }}</p>-->
-                    <!--                    {% endif %}-->
+                    <p class="post-meta" th:text="${i.getCategory().getTitle()}">Category</p>
                 </a>
             </div>
         </div>
@@ -59,10 +94,12 @@
             <h2 style="text-align: center">Uups...</h2>
             <h4 style="text-align: center">There are no available places at this moment.</h4>
         </div>
+
         <div class="clearfix" style="text-align: center">
             <a class="btn btn-primary" href="/location/add">Add location</a>
         </div>
     </div>
+
     <nav aria-label="Pagination" th:if="${totalPages > 0}">
         <ul class="pagination pagination-sm justify-content-center pg-dark">
             <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
@@ -93,5 +130,23 @@
 
 
 <div th:insert="fragments/footer :: footer"></div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#btnClear").on("click", function (e) {
+            e.preventDefault();
+            $("#category").selectedIndex = -1;
+            $("#country").selectedIndex = -1;
+            $("#city").selectedIndex = -1;
+            window.location = "[[@{/location/list}]]";
+        });
+    });
+
+    $('#country').on('change', function () {
+        var cityId = 'city' + $(this).val();
+        $('#'+cityId).show();
+    });
+</script>
 </body>
 </html>

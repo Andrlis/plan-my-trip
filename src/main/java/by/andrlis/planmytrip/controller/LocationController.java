@@ -27,7 +27,7 @@ public class LocationController {
     private LocationService locationService;
 
     @GetMapping("/add")
-    public String showAddLocationPage(Model model){
+    public String showAddLocationPage(Model model) {
         List<LocationCategory> existingCategories = locationService.getAllLocationCategories();
         List<Country> existingCountries = locationService.getAllCountries();
         List<City> existingCities = locationService.getAllCities();
@@ -42,20 +42,27 @@ public class LocationController {
     }
 
     @PostMapping("/add")
-    public String addLocation(LocationCreationDto locationCreationDto){
+    public String addLocation(LocationCreationDto locationCreationDto) {
         locationService.addLocation(locationCreationDto);
         return "redirect:/location/list";
     }
 
     @GetMapping("/list")
-    public String showLocationsList(Model model, @RequestParam(required = false) String keyword,
-                                    @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int size){
+    public String showLocationsList(Model model, @RequestParam(required = false) String category,
+                                    @RequestParam(required = false) String country, @RequestParam(required = false) String city,
+                                    @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int size) {
+        List<LocationCategory> existingCategories = locationService.getAllLocationCategories();
+        List<Country> existingCountries = locationService.getAllCountries();
+        List<City> existingCities = locationService.getAllCities();
 
         Pageable paging = PageRequest.of(page - 1, size);
         Page<Location> locationPage = locationService.getLocationsPageable(paging);
         List<Location> locations = locationPage.getContent();
 
         model.addAttribute("locationsList", locations);
+        model.addAttribute("categories", existingCategories);
+        model.addAttribute("countries", existingCountries);
+        model.addAttribute("cities", existingCities);
         model.addAttribute("currentPage", locationPage.getNumber() + 1);
         model.addAttribute("totalItems", locationPage.getTotalElements());
         model.addAttribute("totalPages", locationPage.getTotalPages());
@@ -64,7 +71,7 @@ public class LocationController {
     }
 
     @GetMapping("/details")
-    public String showLocationDetails(Model model, @RequestParam Long id){
+    public String showLocationDetails(Model model, @RequestParam Long id) {
         return "location-details";
     }
 }

@@ -41,7 +41,7 @@
 
                             <div class="form-group p-2 mb-4">
                                 <label class="form-label" for="name">Location Name:</label>
-                                <input type="text" id="name" class="form-control form-control-lg"
+                                <input type="text" id="name" class="form-control"
                                        th:field="*{name}"/>
                                 <span th:errors="*{name}" class="alert alert-danger" role="alert"></span>
                             </div>
@@ -55,64 +55,65 @@
 
                             <div class="form-group p-2 mb-4">
                                 <label class="form-label" for="description">Location address:</label>
-                                <input type="text" id="address" class="form-control form-control-lg"
+                                <input type="text" id="address" class="form-control"
                                        th:field="*{address}"/>
                                 <span th:errors="*{address}" class="alert alert-danger" role="alert"></span>
                             </div>
 
                             <div class="form-group p-2 mb-4">
                                 <label class="form-label" for="category">Category:</label>
-                                <select th:field="*{category}" class="form-select form-control form-control-lg"
+                                <select th:field="*{category}" class="form-select form-control"
                                         id="category">
                                     <option th:each="i : ${categoryList}" th:value="${i.getTitle()}"
                                             th:text="${i.getTitle()}"></option>
                                     <option value="Other">Other</option>
                                 </select>
-                                <div class="p-2 mb-2" id="category-creation">
-                                    <input type="text" id="new-category" class="form-control form-control-lg"
+                                <div class="p-2 mt-2" id="category-creation">
+                                    <input type="text" id="new-category" class="form-control"
                                            placeholder="New category name" th:field="*{newCategory}"/>
                                     <input type="text" id="new-category-description"
-                                           class="form-control form-control-lg"
+                                           class="form-control"
                                            placeholder="New category description" th:field="*{newCategoryDescription}"/>
                                 </div>
                                 <span th:errors="*{category}" class="alert alert-danger" role="alert"></span>
                             </div>
                             <div class="form-group p-2 mb-4">
                                 <label class="form-label" for="latitude">Latitude:</label>
-                                <input type="text" id="latitude" class="form-control form-control-lg"
+                                <input type="text" id="latitude" class="form-control"
                                        th:field="*{latitude}"/>
                                 <span th:errors="*{latitude}" class="alert alert-danger" role="alert"></span>
                             </div>
 
                             <div class="form-group p-2 mb-4">
                                 <label class="form-label" for="longitude">Longitude:</label>
-                                <input type="text" id="longitude" class="form-control form-control-lg"
+                                <input type="text" id="longitude" class="form-control"
                                        th:field="*{longitude}"/>
                                 <span th:errors="*{longitude}" class="alert alert-danger" role="alert"></span>
                             </div>
 
                             <div class="form-group p-2 mb-4">
                                 <label class="form-label" for="country">Country:</label>
-                                <select th:field="*{country}" class="form-select form-control form-control-lg"
+                                <select th:field="*{country}" class="form-select form-control"
                                         id="country">
                                     <option th:each="i : ${countryList}" th:value="${i.getName()}"
                                             th:text="${i.getName()}"></option>
                                     <option value="Other">Other</option>
                                 </select>
-                                <input type="text" id="new-country" class="form-control form-control-lg"
+                                <input type="text" id="new-country" class="form-control mt-2"
                                        placeholder="New country name" th:field="*{newCountry}"/>
                                 <span th:errors="*{country}" class="alert alert-danger" role="alert"></span>
                             </div>
 
-                            <div class="form-group p-2 mb-4">
+                            <div th:each="country : ${countryList}" th:style="'display: none'"
+                                 th:id="city + ${country.getName()}" class="form-group p-2 mb-4">
                                 <label class="form-label" for="city">City:</label>
-                                <select th:field="*{city}" class="form-select form-control form-control-lg"
+                                <select th:field="*{city}" class="form-select form-control mt-2"
                                         id="city">
-                                    <option th:each="i : ${cityList}" th:value="${i.getName()}"
+                                    <option th:each="i : ${country.getCities()}" th:value="${i.getName()}"
                                             th:text="${i.getName()}"></option>
                                     <option value="Other">Other</option>
                                 </select>
-                                <input type="text" id="new-city" class="form-control form-control-lg"
+                                <input type="text" id="new-city" class="form-control mt-2"
                                        placeholder="New city name" th:field="*{newCity}"/>
                                 <span th:errors="*{city}" class="alert alert-danger" role="alert"></span>
                             </div>
@@ -137,13 +138,13 @@
 
 <script>
     $(document).ready(function () {
-        if ($('#category option').length > 1) {
+        if ($('#category option').length > 2) {
             $('#category-creation').hide();
         }
-        if ($('#country option').length > 1) {
+        if ($('#country option').length > 2) {
             $('#new-country').hide();
         }
-        if ($('#city option').length > 1) {
+        if ($('#city option').length > 2) {
             $('#new-city').hide();
         }
     });
@@ -155,6 +156,8 @@
         }
     });
     $('#country').on('change', function () {
+        var cityId = 'city' + $(this).val();
+        $('#'+cityId).show();
         if ($(this).val() !== 'Other') {
             $('#new-country').hide();
         } else {
