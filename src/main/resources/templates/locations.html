@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Locations</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="icon" th:href="@{/img/map-icon.png}">
+
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+
+    <link th:href="@{/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet'
+          type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
+          rel='stylesheet' type='text/css'>
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/clean-blog.min.css}" rel="stylesheet"/>
+</head>
+<body>
+<nav th:fragment="header" class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+    <div th:replace="fragments/header :: header"></div>
+</nav>
+
+<header class="masthead" th:style="'background-image: url(' + @{/img/objects-bg.jpg} +')'">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="site-heading">
+                    <h1>Locations</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="row justify-content-center align-items-center mx-auto">
+        <div id="filter-panel" class="collapse filter-panel">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form th:action="@{/location/list}" id="searchForm">
+                        <div class="form-group d-flex m-2 p-2">
+                            <i class="fa fa-search align-self-center mr-2"></i>
+                            <select class="form-select form-control align-self-center mr-2"
+                                    id="category" th:name="category">
+                                <option disabled selected value>Category</option>
+                                <option th:each="i : ${categories}" th:value="${i.getTitle()}"
+                                        th:text="${i.getTitle()}"></option>
+                            </select>
+                            <select class="form-select form-control align-self-center mr-2"
+                                    id="country" th:name="country">
+                                <option disabled selected value>Country</option>
+                                <option th:each="i : ${countries}" th:value="${i.getName()}"
+                                        th:text="${i.getName()}"></option>
+                            </select>
+                            <select th:each="country : ${countries}" th:style="'display: none'" class="form-select form-control align-self-center mr-2"
+                                    th:name="city" th:id="city + ${country.getName()}">
+                                <option disabled selected value>City</option>
+                                <option th:each="i : ${country.getCities()}" th:value="${i.getName()}"
+                                        th:text="${i.getName()}"></option>
+                            </select>
+                            <button id="btnClear" class="btn btn-info btn-sm mr-2">Clear</button>
+                            <button type="submit" class="btn btn-secondary btn-sm">Search</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#filter-panel">
+            <span class="glyphicon glyphicon-cog"></span> Advanced Search
+        </button>
+    </div>
+
+    <div class="row">
+        <div th:if="${locationsList}" class="col-lg-8 col-md-10 mx-auto">
+            <div th:each="i : ${locationsList}" class="post-preview">
+                <a th:href="'/location/'+${i.getId()}+'/details/'">
+                    <h2 class="post-title" th:text="${i.getName()}">
+                        Name
+                    </h2>
+                    <h3 class="post-subtitle" style="text-align: justify;" th:text="${i.getDescription()}">
+                        Description
+                    </h3>
+                    <p class="post-meta" th:text="${i.getCategory().getTitle()}">Category</p>
+                </a>
+            </div>
+        </div>
+        <div th:unless="${locationsList}" class="col-lg-8 col-md-10 mx-auto">
+            <h2 style="text-align: center">Uups...</h2>
+            <h4 style="text-align: center">There are no available places at this moment.</h4>
+        </div>
+
+        <div class="clearfix" style="text-align: center">
+            <a class="btn btn-primary" href="/location/add">Add location</a>
+        </div>
+    </div>
+
+    <nav aria-label="Pagination" th:if="${totalPages > 0}">
+        <ul class="pagination pagination-sm justify-content-center pg-dark">
+            <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                <a th:replace="fragments/locations-paging :: paging(1, '<<', 'First Page')"></a>
+            </li>
+            <li class="page-item font-weight-bold" th:classappend="${currentPage == 1} ? 'disabled'">
+                <a th:replace="fragments/locations-paging :: paging(${currentPage - 1}, 'Prev', 'Previous Page')"></a>
+            </li>
+            <li class="page-item disabled" th:if="${currentPage - 2 > 1}">
+                <a class="page-link" href="#">...</a>
+            </li>
+            <li class="page-item" th:classappend="${page == currentPage} ? 'active'"
+                th:each="page : ${#numbers.sequence(currentPage > 2 ? currentPage - 2 : 1, currentPage + 2 < totalPages ? currentPage + 2 : totalPages)}">
+                <a th:replace="fragments/locations-paging :: paging(${page}, ${page}, 'Page ' + ${page})"></a>
+            </li>
+            <li class="page-item disabled" th:if="${currentPage + 2 < totalPages}">
+                <a class="page-link" href="#">...</a>
+            </li>
+            <li class="page-item font-weight-bold" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                <a th:replace="fragments/locations-paging :: paging(${currentPage + 1},'Next', 'Next Page')"></a>
+            </li>
+            <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                <a th:replace="fragments/locations-paging :: paging(${totalPages}, '>>', 'Last Page')"></a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+
+<div th:insert="fragments/footer :: footer"></div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#btnClear").on("click", function (e) {
+            e.preventDefault();
+            $("#category").selectedIndex = -1;
+            $("#country").selectedIndex = -1;
+            $("#city").selectedIndex = -1;
+            window.location = "[[@{/location/list}]]";
+        });
+    });
+
+    $('#country').on('change', function () {
+        var cityId = 'city' + $(this).val();
+        $('#'+cityId).show();
+    });
+</script>
+</body>
+</html>

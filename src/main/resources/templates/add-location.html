@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add location</title>
+    <link rel="icon" th:href="@{/img/map-icon.png}">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+
+    <link th:href="@{/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet'
+          type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
+          rel='stylesheet' type='text/css'>
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/clean-blog.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/map.css}" rel="stylesheet">
+
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light" id="mapNav">
+    <div th:replace="fragments/header :: header"></div>
+</nav>
+
+<section class="bg-image"
+         th:style="'background-image: url(' + @{/img/add-location-bg.jpg} +'); background-repeat: no-repeat; background-size: contain; background-size: 100% 100%;'">
+    <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+        <div class="container h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="card m-2" style="border-radius: 15px;">
+                    <div class="card-body p-5">
+                        <h2 class="text-uppercase text-center mb-5">Create new location</h2>
+
+                        <form th:action="@{/location/add}" th:object="${location}" method="post">
+
+                            <div class="form-group p-2 mb-4">
+                                <label class="form-label" for="name">Location Name:</label>
+                                <input type="text" id="name" class="form-control"
+                                       th:field="*{name}"/>
+                                <span th:errors="*{name}" class="alert alert-danger" role="alert"></span>
+                            </div>
+
+                            <div class="form-group p-2 mb-4">
+                                <label class="form-label" for="description">Location description:</label>
+                                <input type="text" id="description" class="form-control form-control-lg"
+                                       th:field="*{description}"/>
+                                <span th:errors="*{description}" class="alert alert-danger" role="alert"></span>
+                            </div>
+
+                            <div class="form-group p-2 mb-4">
+                                <label class="form-label" for="description">Location address:</label>
+                                <input type="text" id="address" class="form-control"
+                                       th:field="*{address}"/>
+                                <span th:errors="*{address}" class="alert alert-danger" role="alert"></span>
+                            </div>
+
+                            <div class="form-group p-2 mb-4">
+                                <label class="form-label" for="category">Category:</label>
+                                <select th:field="*{category}" class="form-select form-control"
+                                        id="category">
+                                    <option th:each="i : ${categoryList}" th:value="${i.getTitle()}"
+                                            th:text="${i.getTitle()}"></option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                <div class="p-2 mt-2" id="category-creation">
+                                    <input type="text" id="new-category" class="form-control"
+                                           placeholder="New category name" th:field="*{newCategory}"/>
+                                    <input type="text" id="new-category-description"
+                                           class="form-control"
+                                           placeholder="New category description" th:field="*{newCategoryDescription}"/>
+                                </div>
+                                <span th:errors="*{category}" class="alert alert-danger" role="alert"></span>
+                            </div>
+                            <div class="form-group p-2 mb-4">
+                                <label class="form-label" for="latitude">Latitude:</label>
+                                <input type="text" id="latitude" class="form-control"
+                                       th:field="*{latitude}"/>
+                                <span th:errors="*{latitude}" class="alert alert-danger" role="alert"></span>
+                            </div>
+
+                            <div class="form-group p-2 mb-4">
+                                <label class="form-label" for="longitude">Longitude:</label>
+                                <input type="text" id="longitude" class="form-control"
+                                       th:field="*{longitude}"/>
+                                <span th:errors="*{longitude}" class="alert alert-danger" role="alert"></span>
+                            </div>
+
+                            <div class="form-group p-2 mb-4">
+                                <label class="form-label" for="country">Country:</label>
+                                <select th:field="*{country}" class="form-select form-control"
+                                        id="country">
+                                    <option th:each="i : ${countryList}" th:value="${i.getName()}"
+                                            th:text="${i.getName()}"></option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                <input type="text" id="new-country" class="form-control mt-2"
+                                       placeholder="New country name" th:field="*{newCountry}"/>
+                                <span th:errors="*{country}" class="alert alert-danger" role="alert"></span>
+                            </div>
+
+                            <div th:each="country : ${countryList}" th:style="'display: none'"
+                                 th:id="city + ${country.getName()}" class="form-group p-2 mb-4">
+                                <label class="form-label" for="city">City:</label>
+                                <select th:field="*{city}" class="form-select form-control mt-2"
+                                        id="city">
+                                    <option th:each="i : ${country.getCities()}" th:value="${i.getName()}"
+                                            th:text="${i.getName()}"></option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                <input type="text" id="new-city" class="form-control mt-2"
+                                       placeholder="New city name" th:field="*{newCity}"/>
+                                <span th:errors="*{city}" class="alert alert-danger" role="alert"></span>
+                            </div>
+
+                            <div class="d-flex justify-content-center">
+                                <button type="submit"
+                                        class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">
+                                    Create
+                                </button>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div th:insert="fragments/footer :: footer"></div>
+
+<script>
+    $(document).ready(function () {
+        if ($('#category option').length > 1) {
+            $('#category-creation').hide();
+        }
+        if ($('#country option').length > 1) {
+            $('#new-country').hide();
+        }
+        if ($('#city option').length > 1) {
+            $('#new-city').hide();
+        }
+    });
+    $('#category').on('change', function () {
+        if ($(this).val() !== 'Other') {
+            $('#category-creation').hide();
+        } else {
+            $('#category-creation').show();
+        }
+    });
+    $('#country').on('change', function () {
+        var cityId = 'city' + $(this).val();
+        $('#'+cityId).show();
+        if ($(this).val() !== 'Other') {
+            $('#new-country').hide();
+        } else {
+            $('#new-country').show();
+        }
+    });
+    $('#city').on('change', function () {
+        if ($(this).val() !== 'Other') {
+            $('#new-city').hide();
+        } else {
+            $('#new-city').show();
+        }
+    });
+</script>
+
+</body>
+</html>

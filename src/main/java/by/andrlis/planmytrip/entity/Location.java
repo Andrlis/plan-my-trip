@@ -17,10 +17,16 @@ public class Location {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private String type; //Should be changed to Enum
+    @OneToOne
+    private LocationCategory category;
     private String description;
+    private String address;
     @ManyToOne
     private GeoPoint geoPoint;
     @OneToMany
     private List<LocationContent> locationContentItems;
+    @ManyToOne
+    private Country country;
+    @ManyToOne
+    private City city;
 }
