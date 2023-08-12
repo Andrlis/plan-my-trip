@@ -19,4 +19,6 @@ public class LocationCreationDto {
     private String newCountry;
     private String city;
     private String newCity;
+
+
 }
