@@ -65,7 +65,8 @@
                                     <label class="form-label" for="category">Category:</label>
                                     <select th:field="*{category}" class="form-select form-control"
                                             id="category">
-                                        <option th:each="i : ${categoryList}" th:value="${i.getTitle()}"
+                                        <option value="" hidden>Select a category</option>
+                                        <option th:each="i : ${location.getExistingCategories()}" th:value="${i.getTitle()}"
                                                 th:text="${i.getTitle()}"></option>
                                         <option value="Other">Other</option>
                                     </select>
@@ -97,7 +98,8 @@
                                     <label class="form-label" for="country">Country:</label>
                                     <select th:field="*{country}" class="form-select form-control"
                                             id="country">
-                                        <option th:each="i : ${countryList}" th:value="${i.getName()}"
+                                        <option value="" hidden>Select a country</option>
+                                        <option th:each="i : ${location.getExistingCountries()}" th:value="${i.getName()}"
                                                 th:text="${i.getName()}"></option>
                                         <option value="Other">Other</option>
                                     </select>
@@ -106,11 +108,12 @@
                                     <span th:errors="*{country}" class="alert alert-danger" role="alert"></span>
                                 </div>
 
-                                <div th:each="country : ${countryList}" th:style="'display: none'"
+                                <div th:each="country : ${location.getExistingCountries()}" th:style="'display: none'"
                                      th:id="city + ${country.getName()}" class="form-group p-2 mb-4">
                                     <label class="form-label" for="city">City:</label>
                                     <select th:field="*{city}" class="form-select form-control mt-2"
                                             id="city">
+                                        <option value="" hidden>Select a city</option>
                                         <option th:each="i : ${country.getCities()}" th:value="${i.getName()}"
                                                 th:text="${i.getName()}"></option>
                                         <option value="Other">Other</option>
@@ -119,6 +122,28 @@
                                            placeholder="New city name" th:field="*{newCity}"/>
                                     <span th:errors="*{city}" class="alert alert-danger" role="alert"></span>
                                 </div>
+
+                                <div id="location-resources">
+
+                                    <table th:if="*{resources}">
+                                        <thead>
+                                        <tr>
+                                            <th>Type</th>
+                                            <th>Value</th>
+                                            <th>Order</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+
+                                    <div class="d-flex justify-content-center">
+                                        <button type="submit"
+                                                class="btn btn-success gradient-custom-4 text-body"
+                                                name="addResource" th:text="'Add Resource'">Add resource
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <br>
 
                                 <div class="d-flex justify-content-center">
                                     <button type="submit"
@@ -141,13 +166,13 @@
 
 <script>
     $(document).ready(function () {
-        if ($('#category option').length > 1) {
+        if ($('#category option').length > 2) {
             $('#category-creation').hide();
         }
-        if ($('#country option').length > 1) {
+        if ($('#country option').length > 2) {
             $('#new-country').hide();
         }
-        if ($('#city option').length > 1) {
+        if ($('#city option').length > 2) {
             $('#new-city').hide();
         }
     });
