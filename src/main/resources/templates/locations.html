@@ -79,7 +79,7 @@
     <div class="row">
         <div th:if="${locationsList}" class="col-lg-8 col-md-10 mx-auto">
             <div th:each="i : ${locationsList}" class="post-preview">
-                <a href="{{ object.get_absolute_url }}">
+                <a th:href="'/location/'+${i.getId()}+'/details/'">
                     <h2 class="post-title" th:text="${i.getName()}">
                         Name
                     </h2>

@@ -15,7 +15,7 @@ public class LocationContent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    private Location post;
+    private Location location;
 
     @OneToOne
     private ContentSource contentSource;

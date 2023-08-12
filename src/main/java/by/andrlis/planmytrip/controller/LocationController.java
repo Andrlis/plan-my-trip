@@ -12,12 +12,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/location")
@@ -53,16 +51,14 @@ public class LocationController {
                                     @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int size) {
         List<LocationCategory> existingCategories = locationService.getAllLocationCategories();
         List<Country> existingCountries = locationService.getAllCountries();
-        List<City> existingCities = locationService.getAllCities();
 
         Pageable paging = PageRequest.of(page - 1, size);
-        Page<Location> locationPage = locationService.getLocationsPageable(paging);
+        Page<Location> locationPage = locationService.getLocationsPageable(paging, category, country, city);
         List<Location> locations = locationPage.getContent();
 
         model.addAttribute("locationsList", locations);
         model.addAttribute("categories", existingCategories);
         model.addAttribute("countries", existingCountries);
-        model.addAttribute("cities", existingCities);
         model.addAttribute("currentPage", locationPage.getNumber() + 1);
         model.addAttribute("totalItems", locationPage.getTotalElements());
         model.addAttribute("totalPages", locationPage.getTotalPages());
@@ -70,8 +66,13 @@ public class LocationController {
         return "locations";
     }
 
-    @GetMapping("/details")
-    public String showLocationDetails(Model model, @RequestParam Long id) {
+    @GetMapping("/{id}/details")
+    public String showLocationDetails(Model model, @PathVariable Long id) {
+        Optional<Location> requestedLocation = locationService.getLocation(id);
+        if(requestedLocation.isPresent()){
+            model.addAttribute("location", requestedLocation.get());
+            return "location-details";
+        }
         return "location-details";
     }
 }

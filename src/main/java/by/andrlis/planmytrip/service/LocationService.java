@@ -41,12 +41,18 @@ public class LocationService {
         return cityRepository.findAll();
     }
 
-    public List<Location> getAllLocations(){
+    public List<Location> getAllLocations() {
         return locationRepository.findAll();
     }
 
-    public Page<Location> getLocationsPageable(Pageable pageable){
-        return locationRepository.getLocationsPageable(pageable);
+    public Page<Location> getLocationsPageable(Pageable pageable, String categoryName, String countryName, String cityName) {
+
+        LocationCategory category = locationCategoryRepository.findByTitle(categoryName).orElse(null);
+        Country country = countryRepository.findByName(countryName).orElse(null);
+        City city = cityRepository.findByName(cityName).orElse(null);
+
+
+        return locationRepository.findPageableLocationsByCategoryAndCountryAndCity(category, country, city, pageable);
     }
 
     public void addLocation(LocationCreationDto locationCreationDto) {
@@ -119,5 +125,9 @@ public class LocationService {
                 .build();
 
         locationRepository.save(location);
+    }
+
+    public Optional<Location> getLocation(Long id) {
+        return locationRepository.findById(id);
     }
 }

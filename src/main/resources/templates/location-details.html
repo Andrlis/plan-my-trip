@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Sight</title>
+    <title>Location</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link rel="icon" th:href="@{/img/map-icon.png}">
@@ -31,9 +31,9 @@
         <div class="row">
             <div class="col-lg-8 col-md-10 mx-auto">
                 <div class="post-heading">
-                    <h1 style="text-align: center" th:text="${sight.getName()}">Sight name</h1>
-                    <h2 class="subheading" style="text-align: center" th:text="'Type: ' + ${sight.getType()}">Type</h2>
-                    <p th:if="${sight.getAddress()}" class="post-meta" th:text="${sight.getAddress()}">Address</p>
+                    <h1 style="text-align: center" th:text="${location.getName()}">location name</h1>
+                    <h2 class="subheading" style="text-align: center" th:text="'Category: ' + ${location.getCategory().getTitle()}">Type</h2>
+                    <h3 style="text-align: center" th:if="${location.getAddress()}" class="post-meta" th:text="${location.getAddress()}">Address</h3>
                 </div>
             </div>
         </div>
@@ -45,8 +45,9 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-md-10 mx-auto">
-                <p style="text-align: justify" th:text="${sight.getDescription()}">Description</p>
-                <div th:each="resource: ${sight.getResources()}">
+                <h1 th:unless="${location.getDescription().isEmpty()}">Description</h1>
+                <p style="text-align: justify" th:text="${location.getDescription()}">Description</p>
+                <div th:each="resource: ${location.getLocationContentItems()}">
                     <!--                    {% if resource.resource_type == 'TXT' %}-->
                     <div th:if="${resource.getTitle()} == 'TXT'">
                         <h3 th:text="${resource.getTitle()}">ResourceTitle</h3>
