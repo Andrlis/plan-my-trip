@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeController {
 
     @GetMapping("/")
-    public String showHome(){
+    public String showHome() {
         return "home";
     }
 
     @GetMapping("/about")
-    public String showAbout(){
+    public String showAbout() {
         return "about";
     }
 }
