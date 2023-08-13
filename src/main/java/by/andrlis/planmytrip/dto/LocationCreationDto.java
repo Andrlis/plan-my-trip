@@ -1,10 +1,17 @@
 package by.andrlis.planmytrip.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import by.andrlis.planmytrip.entity.City;
+import by.andrlis.planmytrip.entity.Country;
+import by.andrlis.planmytrip.entity.LocationCategory;
+import by.andrlis.planmytrip.entity.LocationContent;
+import lombok.*;
+
+import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class LocationCreationDto {
 
     private String name;
@@ -19,4 +26,7 @@ public class LocationCreationDto {
     private String newCountry;
     private String city;
     private String newCity;
+    private List<LocationContent> resources;
+    private List<LocationCategory> existingCategories;
+    private List<Country> existingCountries;
 }

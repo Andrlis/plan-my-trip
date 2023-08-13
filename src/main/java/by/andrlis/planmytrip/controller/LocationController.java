@@ -1,11 +1,10 @@
 package by.andrlis.planmytrip.controller;
 
 import by.andrlis.planmytrip.dto.LocationCreationDto;
-import by.andrlis.planmytrip.entity.City;
-import by.andrlis.planmytrip.entity.Country;
-import by.andrlis.planmytrip.entity.Location;
-import by.andrlis.planmytrip.entity.LocationCategory;
+import by.andrlis.planmytrip.entity.*;
 import by.andrlis.planmytrip.service.LocationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,20 +20,19 @@ import java.util.Optional;
 @RequestMapping("/location")
 public class LocationController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(LocationController.class);
+
     @Autowired
     private LocationService locationService;
 
     @GetMapping("/add")
     public String showAddLocationPage(Model model) {
-        List<LocationCategory> existingCategories = locationService.getAllLocationCategories();
-        List<Country> existingCountries = locationService.getAllCountries();
-        List<City> existingCities = locationService.getAllCities();
 
+        LocationCreationDto locationCreationDto = new LocationCreationDto();
+        locationCreationDto.setExistingCategories(locationService.getAllLocationCategories());
+        locationCreationDto.setExistingCountries(locationService.getAllCountries());
 
-        model.addAttribute("location", new LocationCreationDto());
-        model.addAttribute("categoryList", existingCategories);
-        model.addAttribute("countryList", existingCountries);
-        model.addAttribute("cityList", existingCities);
+        model.addAttribute("location", locationCreationDto);
 
         return "add-location";
     }
@@ -45,10 +43,19 @@ public class LocationController {
         return "redirect:/location/list";
     }
 
+    @RequestMapping(value = "/add", params = {"addResource"})
+    public String addRow(final LocationCreationDto locationCreationDto, Model model) {
+        locationCreationDto.getResources().add(new LocationContent());
+        model.addAttribute("location", locationCreationDto);
+        return "add-location";
+    }
+
     @GetMapping("/list")
     public String showLocationsList(Model model, @RequestParam(required = false) String category,
                                     @RequestParam(required = false) String country, @RequestParam(required = false) String city,
                                     @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int size) {
+        LOGGER.debug(String.format("Show locations filtered by params: category[%s], country[%s], city[%s]", category, country, city));
+
         List<LocationCategory> existingCategories = locationService.getAllLocationCategories();
         List<Country> existingCountries = locationService.getAllCountries();
 
@@ -68,8 +75,9 @@ public class LocationController {
 
     @GetMapping("/{id}/details")
     public String showLocationDetails(Model model, @PathVariable Long id) {
+        LOGGER.debug(String.format("Show details for location with id %d", id));
         Optional<Location> requestedLocation = locationService.getLocation(id);
-        if(requestedLocation.isPresent()){
+        if (requestedLocation.isPresent()) {
             model.addAttribute("location", requestedLocation.get());
             return "location-details";
         }

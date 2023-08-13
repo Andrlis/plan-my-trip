@@ -4,6 +4,8 @@ import by.andrlis.planmytrip.dto.UserAuthenticationDto;
 import by.andrlis.planmytrip.dto.UserRegistrationDto;
 import by.andrlis.planmytrip.entity.User;
 import by.andrlis.planmytrip.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +25,8 @@ import java.util.Optional;
 @RequestMapping("/user")
 public class UserController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+
     @Autowired
     private UserService userService;
 
@@ -40,6 +44,7 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             setValidationErrors(bindingResult, model);
             model.addAttribute("authenticationdto", userAuthenticationDto);
+            LOGGER.debug("Authentication: input parameters validation failed.");
             return "login";
         }
 
@@ -48,9 +53,11 @@ public class UserController {
         if (byUsername.isPresent()) {
             User user = byUsername.get();
             session.setAttribute("sessionUser", user);
+            LOGGER.debug(String.format("User %s authenticated successfully", user.getUsername()));
             return "redirect:/";
         } else {
             model.addAttribute("errorLogin", "Wrong username or password");
+            LOGGER.debug("Authentication failed: wrong username or password");
             return "login";
         }
     }
@@ -67,12 +74,14 @@ public class UserController {
                            Model model) {
         Optional<User> existing = userService.findByUsername(userRegistrationDto.getUsername());
         if (existing.isPresent()) {
+            LOGGER.debug(String.format("Registration failed: account with %s username is already exists.", userRegistrationDto.getUsername()));
             bindingResult.rejectValue("username", null, "There is already an account registered with that username");
         }
 
         if (bindingResult.hasErrors()) {
             setValidationErrors(bindingResult, model);
             model.addAttribute("registrationdto", userRegistrationDto);
+            LOGGER.debug("Registration: input parameters validation failed.");
             return "registration";
         }
 
