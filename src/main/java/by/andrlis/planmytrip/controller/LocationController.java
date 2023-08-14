@@ -74,9 +74,8 @@ public class LocationController {
     }
 
     @PostMapping("/{id}/addResource")
-    public String addLocationResource(@PathVariable Long id, @ModelAttribute LocationContentDto locationContentDto,
-                                      @RequestParam(name = "image", required = false) MultipartFile file) {
+    public String addLocationResource(@PathVariable Long id, @ModelAttribute LocationContentDto locationContentDto) {
 //        locationService.addLocation(locationContentDto);
-        return String.format("redirect:/location/%d/details");
+        return String.format("redirect:/location/%d/details", id);
     }
 }

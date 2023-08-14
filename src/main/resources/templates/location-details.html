@@ -72,29 +72,31 @@
         </p>
         <div class="collapse" id="collapseExample">
             <div class="card card-body">
-                <form th:action="@{/location/${location.getId()}/addResource}" th:object="${newContent}" method="post">
+                <form th:action="'/location/'+${location.getId()}+'/addResource'" th:object="${newContent}"
+                      enctype="multipart/form-data" method="post">
                     <div class="form-group p-2 mb-4">
                         <label class="form-label" for="type">Content type:</label>
                         <select th:field="*{type}" class="form-select form-control"
                                 id="type">
-                            <option value="TEXT">Text</option>
+                            <option value="TEXT" selected>Text</option>
                             <option value="URL">Url</option>
                             <option value="IMAGE">Image</option>
                         </select>
                     </div>
-                    <div class="form-group p-2 mb-4">
+                    <div class="form-group p-2 mb-4" id="text-resource">
                         <label class="form-label" for="text-content">Add text:</label>
                         <input type="text" id="text-content" class="form-control"
                                th:field="*{text}"/>
                     </div>
-                    <div class="form-group p-2 mb-4">
+                    <div class="form-group p-2 mb-4" id="url-resource">
                         <label class="form-label" for="url-content">Add URl:</label>
                         <input type="text" id="url-content" class="form-control"
                                th:field="*{url}"/>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="image-resource">
                         <label class="form-label" for="image-content">Add image:</label>
-                        <input type="file" id="image-content" name="image" accept="image/*" class="form-control-file">
+                        <input type="file" id="image-content" name="image" accept="image/*" class="form-control-file"
+                               th:field="*{file}">
                     </div>
                     <br>
                     <button type="submit"
@@ -110,5 +112,29 @@
 
 
 <div th:insert="fragments/footer :: footer"></div>
+
+<script>
+    $(document).ready(function () {
+        $('#url-resource').hide();
+        $('#image-resource').hide();
+    });
+    $('#type').on('change', function () {
+        if ($(this).val() == 'TEXT') {
+            $('#text-resource').show();
+            $('#url-resource').hide();
+            $('#image-resource').hide();
+        }
+        if ($(this).val() == 'URL') {
+            $('#url-resource').show();
+            $('#text-resource').hide();
+            $('#image-resource').hide();
+        }
+        if ($(this).val() == 'IMAGE') {
+            $('#image-resource').show();
+            $('#url-resource').hide();
+            $('#text-resource').hide();
+        }
+    });
+</script>
 </body>
 </html>
