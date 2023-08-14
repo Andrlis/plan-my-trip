@@ -1,5 +1,6 @@
 package by.andrlis.planmytrip.controller;
 
+import by.andrlis.planmytrip.dto.LocationContentDto;
 import by.andrlis.planmytrip.dto.LocationCreationDto;
 import by.andrlis.planmytrip.entity.*;
 import by.andrlis.planmytrip.service.LocationService;
@@ -10,8 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,13 +41,6 @@ public class LocationController {
         return "redirect:/location/list";
     }
 
-    @RequestMapping(value = "/add", params = {"addResource"})
-    public String addRow(final LocationCreationDto locationCreationDto, Model model) {
-        locationCreationDto.getResources().add(new LocationContent());
-        model.addAttribute("location", locationCreationDto);
-        return "add-location";
-    }
-
     @GetMapping("/list")
     public String showLocationsList(Model model, @RequestParam(required = false) String category,
                                     @RequestParam(required = false) String country, @RequestParam(required = false) String city,
@@ -73,8 +67,16 @@ public class LocationController {
         Optional<Location> requestedLocation = locationService.getLocation(id);
         if (requestedLocation.isPresent()) {
             model.addAttribute("location", requestedLocation.get());
+            model.addAttribute("newContent", new LocationContentDto());
             return "location-details";
         }
         return "location-details";
+    }
+
+    @PostMapping("/{id}/addResource")
+    public String addLocationResource(@PathVariable Long id, @ModelAttribute LocationContentDto locationContentDto,
+                                      @RequestParam(name = "image", required = false) MultipartFile file) {
+//        locationService.addLocation(locationContentDto);
+        return String.format("redirect:/location/%d/details");
     }
 }
