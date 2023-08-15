@@ -4,6 +4,8 @@ import by.andrlis.planmytrip.dto.LocationContentDto;
 import by.andrlis.planmytrip.dto.LocationCreationDto;
 import by.andrlis.planmytrip.entity.*;
 import by.andrlis.planmytrip.service.LocationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +20,8 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/location")
 public class LocationController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(LocationController.class);
 
     @Autowired
     private LocationService locationService;
@@ -44,6 +48,8 @@ public class LocationController {
     public String showLocationsList(Model model, @RequestParam(required = false) String category,
                                     @RequestParam(required = false) String country, @RequestParam(required = false) String city,
                                     @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "5") int size) {
+        LOGGER.debug(String.format("Show locations filtered by params: category[%s], country[%s], city[%s]", category, country, city));
+
         List<LocationCategory> existingCategories = locationService.getAllLocationCategories();
         List<Country> existingCountries = locationService.getAllCountries();
 
@@ -63,6 +69,7 @@ public class LocationController {
 
     @GetMapping("/{id}/details")
     public String showLocationDetails(Model model, @PathVariable Long id) {
+        LOGGER.debug(String.format("Show details for location with id %d", id));
         Optional<Location> requestedLocation = locationService.getLocation(id);
         if (requestedLocation.isPresent()) {
             model.addAttribute("location", requestedLocation.get());

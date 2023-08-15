@@ -5,6 +5,10 @@ import by.andrlis.planmytrip.dto.LocationCreationDto;
 import by.andrlis.planmytrip.entity.*;
 import by.andrlis.planmytrip.repository.*;
 import by.andrlis.planmytrip.util.ImageUtil;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +21,8 @@ import java.util.Optional;
 
 @Service
 public class LocationService {
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(LocationService.class);
 
     @Autowired
     private LocationRepository locationRepository;
@@ -67,18 +73,23 @@ public class LocationService {
 
     public void addLocation(LocationCreationDto locationCreationDto) {
 
+        LOGGER.debug("Creation of new location started");
+
         LocationCategory locationCategory = null;
         if (locationCreationDto.getCategory().equals("Other")) {
             locationCategory = LocationCategory.builder()
                     .title(locationCreationDto.getNewCategory())
                     .description(locationCreationDto.getNewCategoryDescription())
                     .build();
+            LOGGER.debug(String.format("Create new location category with title: %s", locationCategory.getTitle()));
             locationCategoryRepository.save(locationCategory);
         } else {
+            LOGGER.debug(String.format("Search for category by title: %s", locationCreationDto.getCategory()));
             Optional<LocationCategory> existingLocationCategory = locationCategoryRepository
                     .findByTitle(locationCreationDto.getCategory());
             if (existingLocationCategory.isPresent()) {
                 locationCategory = existingLocationCategory.get();
+                LOGGER.debug(String.format("Associate location with category: id - %d, title - %s", locationCategory.getId(), locationCategory.getTitle()));
             }
         }
 
@@ -88,11 +99,14 @@ public class LocationService {
 
         if (existingGeoPoint.isPresent()) {
             geoPoint = existingGeoPoint.get();
+            LOGGER.debug(String.format("GeoPoint with provided longitude %s and latitude %s exists. Associate location with GeoPoint [%d]",
+                    geoPoint.getLongitude(), geoPoint.getLatitude(), geoPoint.getId()));
         } else {
             geoPoint = GeoPoint.builder()
                     .longitude(locationCreationDto.getLongitude())
                     .latitude(locationCreationDto.getLatitude())
                     .build();
+            LOGGER.debug(String.format("Create new GeoPoint: longitude - %s, latitude - %s", geoPoint.getLongitude(), geoPoint.getLatitude()));
             geoPointRepository.save(geoPoint);
         }
 
@@ -101,12 +115,15 @@ public class LocationService {
             country = Country.builder()
                     .name(locationCreationDto.getNewCountry())
                     .build();
+            LOGGER.debug(String.format("Create new country with name: %s", country.getName()));
             countryRepository.save(country);
         } else {
+            LOGGER.debug(String.format("Search for country by name: %s", locationCreationDto.getCountry()));
             Optional<Country> existingCountry = countryRepository
                     .findByName(locationCreationDto.getCountry());
             if (existingCountry.isPresent()) {
                 country = existingCountry.get();
+                LOGGER.debug(String.format("Associate location with country: id - %d, name - %s", country.getId(), country.getName()));
             }
         }
 
@@ -114,13 +131,17 @@ public class LocationService {
         if (locationCreationDto.getCity().equals("Other")) {
             city = City.builder()
                     .name(locationCreationDto.getNewCity())
+                    .country(country)
                     .build();
+            LOGGER.debug(String.format("Create new city with name: %s", city.getName()));
             cityRepository.save(city);
         } else {
+            LOGGER.debug(String.format("Search for city by name: %s", locationCreationDto.getCity()));
             Optional<City> existingCity = cityRepository
                     .findByName(locationCreationDto.getCity());
             if (existingCity.isPresent()) {
                 city = existingCity.get();
+                LOGGER.debug(String.format("Associate location with city: id - %d, name - %s", city.getId(), city.getName()));
             }
         }
 
@@ -135,6 +156,7 @@ public class LocationService {
                 .build();
 
         locationRepository.save(location);
+        LOGGER.debug(String.format("New location was created: name - %s", location.getName()));
     }
 
     @Transactional
