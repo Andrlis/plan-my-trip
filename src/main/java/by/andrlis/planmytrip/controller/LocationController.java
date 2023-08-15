@@ -11,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -75,7 +74,7 @@ public class LocationController {
 
     @PostMapping("/{id}/addResource")
     public String addLocationResource(@PathVariable Long id, @ModelAttribute LocationContentDto locationContentDto) {
-//        locationService.addLocation(locationContentDto);
+        locationService.addLocationContent(id, locationContentDto);
         return String.format("redirect:/location/%d/details", id);
     }
 }

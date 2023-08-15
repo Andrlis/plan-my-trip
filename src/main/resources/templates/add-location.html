@@ -108,7 +108,7 @@
                                     <span th:errors="*{country}" class="alert alert-danger" role="alert"></span>
                                 </div>
 
-                                <div th:each="country : ${location.getExistingCountries()}" th:style="'display: none'"
+                                <div th:each="country : ${location.getExistingCountries()}"
                                      th:id="city + ${country.getName()}" class="form-group p-2 mb-4">
                                     <label class="form-label" for="city">City:</label>
                                     <select th:field="*{city}" class="form-select form-control mt-2"
@@ -152,9 +152,9 @@
         if ($('#country option').length > 2) {
             $('#new-country').hide();
         }
-        if ($('#city option').length > 2) {
-            $('#new-city').hide();
-        }
+        // if ($('#city option').length > 2) {
+        //     $('#new-city').hide();
+        // }
     });
     $('#category').on('change', function () {
         if ($(this).val() !== 'Other') {
@@ -164,21 +164,22 @@
         }
     });
     $('#country').on('change', function () {
-        var cityId = 'city' + $(this).val();
-        $('#' + cityId).show();
+        // var cityId = 'city' + $(this).val();
+
         if ($(this).val() !== 'Other') {
             $('#new-country').hide();
         } else {
             $('#new-country').show();
+            $('#city' + $(this).val()).show();
         }
     });
-    $('#city').on('change', function () {
-        if ($(this).val() !== 'Other') {
-            $('#new-city').hide();
-        } else {
-            $('#new-city').show();
-        }
-    });
+    // $('#city').on('change', function () {
+    //     if ($(this).val() !== 'Other') {
+    //         $('#new-city').hide();
+    //     } else {
+    //         $('#new-city').show();
+    //     }
+    // });
 </script>
 
 </body>

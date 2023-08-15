@@ -1,6 +1,7 @@
 package by.andrlis.planmytrip.entity;
 
 import lombok.*;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
@@ -18,8 +19,11 @@ public class ContentSource {
     @OneToOne
     private User sourceAuthor;
     private String url;
+    //@Lob
+    @Column(length = 2550)
     private String text;
-    @Lob
+    //@Lob
+    @Type(type = "org.hibernate.type.BinaryType")
     @Column(length = 1000)
     private byte[] image;
 }
