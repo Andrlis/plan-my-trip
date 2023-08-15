@@ -32,8 +32,10 @@
             <div class="col-lg-8 col-md-10 mx-auto">
                 <div class="post-heading">
                     <h1 style="text-align: center" th:text="${location.getName()}">location name</h1>
-                    <h2 class="subheading" style="text-align: center" th:text="'Category: ' + ${location.getCategory().getTitle()}">Type</h2>
-                    <h3 style="text-align: center" th:if="${location.getAddress()}" class="post-meta" th:text="${location.getAddress()}">Address</h3>
+                    <h2 class="subheading" style="text-align: center"
+                        th:text="'Category: ' + ${location.getCategory().getTitle()}">Type</h2>
+                    <h3 style="text-align: center" th:if="${location.getAddress()}" class="post-meta"
+                        th:text="${location.getAddress()}">Address</h3>
                 </div>
             </div>
         </div>
@@ -49,22 +51,90 @@
                 <p style="text-align: justify" th:text="${location.getDescription()}">Description</p>
                 <div th:each="resource: ${location.getLocationContentItems()}">
                     <!--                    {% if resource.resource_type == 'TXT' %}-->
-                    <div th:if="${resource.getTitle()} == 'TXT'">
-                        <h3 th:text="${resource.getTitle()}">ResourceTitle</h3>
-                        <p style="text-align: justify" th:text="${resource.getTextValue()}">ResourceTextValue</p>
+                    <div th:if="${resource.getContentSource().getType().toString()} == 'TEXT'">
+<!--                        <h3 th:text="${resource.getTitle()}">ResourceTitle</h3>-->
+                        <p style="text-align: justify" th:text="${resource.getContentSource().getText()}">ResourceTextValue</p>
                     </div>
                     <!--                    {% elif resource.resource_type == 'IMG' %}-->
-                    <img th:if="${resource.getTitle()} == 'IMG'" class="img-fluid"
+                    <img th:if="${resource.getContentSource().getType().toString()} == 'IMAGE'" class="img-fluid"
                          style="margin-left: auto; margin-right: auto; width: 80%; display: block"
-                         th:src="${resource.getImage()}">
-                    <a th:if="${resource.getTitle()} == 'URL'" th:href="${resource.getURL()}">ResourceURL</a>
+                         th:src="${resource.getContentSource().getImage()}">
+                    <a th:if="${resource.getContentSource().getType().toString()} == 'URL'" th:href="${resource.getContentSource().getUrl()}">ResourceURL</a>
                 </div>
             </div>
         </div>
+
+        <p class="d-flex justify-content-center">
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample"
+                    aria-expanded="false" aria-controls="collapseExample">
+                Add Content
+            </button>
+        </p>
+        <div class="collapse" id="collapseExample">
+            <div class="card card-body">
+                <form th:action="'/location/'+${location.getId()}+'/addResource'" th:object="${newContent}"
+                      enctype="multipart/form-data" method="post">
+                    <div class="form-group p-2 mb-4">
+                        <label class="form-label" for="type">Content type:</label>
+                        <select th:field="*{type}" class="form-select form-control"
+                                id="type">
+                            <option value="TEXT" selected>Text</option>
+                            <option value="URL">Url</option>
+                            <option value="IMAGE">Image</option>
+                        </select>
+                    </div>
+                    <div class="form-group p-2 mb-4" id="text-resource">
+                        <label class="form-label" for="text-content">Add text:</label>
+                        <input type="text" id="text-content" class="form-control"
+                               th:field="*{text}"/>
+                    </div>
+                    <div class="form-group p-2 mb-4" id="url-resource">
+                        <label class="form-label" for="url-content">Add URl:</label>
+                        <input type="text" id="url-content" class="form-control"
+                               th:field="*{url}"/>
+                    </div>
+                    <div class="form-group" id="image-resource">
+                        <label class="form-label" for="image-content">Add image:</label>
+                        <input type="file" id="image-content" name="image" accept="image/*" class="form-control-file"
+                               th:field="*{file}">
+                    </div>
+                    <br>
+                    <button type="submit"
+                            class="btn btn-success gradient-custom-4 text-body"
+                            th:text="'Submit'">Submit
+                    </button>
+                </form>
+            </div>
+        </div>
+
     </div>
 </article>
 
 
 <div th:insert="fragments/footer :: footer"></div>
+
+<script>
+    $(document).ready(function () {
+        $('#url-resource').hide();
+        $('#image-resource').hide();
+    });
+    $('#type').on('change', function () {
+        if ($(this).val() == 'TEXT') {
+            $('#text-resource').show();
+            $('#url-resource').hide();
+            $('#image-resource').hide();
+        }
+        if ($(this).val() == 'URL') {
+            $('#url-resource').show();
+            $('#text-resource').hide();
+            $('#image-resource').hide();
+        }
+        if ($(this).val() == 'IMAGE') {
+            $('#image-resource').show();
+            $('#url-resource').hide();
+            $('#text-resource').hide();
+        }
+    });
+</script>
 </body>
 </html>

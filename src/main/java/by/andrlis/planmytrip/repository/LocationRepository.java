@@ -1,9 +1,6 @@
 package by.andrlis.planmytrip.repository;
 
-import by.andrlis.planmytrip.entity.City;
-import by.andrlis.planmytrip.entity.Country;
-import by.andrlis.planmytrip.entity.Location;
-import by.andrlis.planmytrip.entity.LocationCategory;
+import by.andrlis.planmytrip.entity.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

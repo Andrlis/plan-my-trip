@@ -1,5 +1,6 @@
 package by.andrlis.planmytrip.controller;
 
+import by.andrlis.planmytrip.dto.LocationContentDto;
 import by.andrlis.planmytrip.dto.LocationCreationDto;
 import by.andrlis.planmytrip.entity.*;
 import by.andrlis.planmytrip.service.LocationService;
@@ -43,13 +44,6 @@ public class LocationController {
         return "redirect:/location/list";
     }
 
-    @RequestMapping(value = "/add", params = {"addResource"})
-    public String addRow(final LocationCreationDto locationCreationDto, Model model) {
-        locationCreationDto.getResources().add(new LocationContent());
-        model.addAttribute("location", locationCreationDto);
-        return "add-location";
-    }
-
     @GetMapping("/list")
     public String showLocationsList(Model model, @RequestParam(required = false) String category,
                                     @RequestParam(required = false) String country, @RequestParam(required = false) String city,
@@ -79,8 +73,15 @@ public class LocationController {
         Optional<Location> requestedLocation = locationService.getLocation(id);
         if (requestedLocation.isPresent()) {
             model.addAttribute("location", requestedLocation.get());
+            model.addAttribute("newContent", new LocationContentDto());
             return "location-details";
         }
         return "location-details";
+    }
+
+    @PostMapping("/{id}/addResource")
+    public String addLocationResource(@PathVariable Long id, @ModelAttribute LocationContentDto locationContentDto) {
+        locationService.addLocationContent(id, locationContentDto);
+        return String.format("redirect:/location/%d/details", id);
     }
 }
