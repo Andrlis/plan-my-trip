@@ -6,7 +6,7 @@ PlanMyTrip - service for trip planning. Service gives users opportunities to see
 
 ## Technology stack:
 - Java 17
-- Spring Boot 2.6.6
+- Spring Boot 2.7.14
 - Database (PostgreSQL 14)
 - Spring Data JPA
 - Logging Log4j2
