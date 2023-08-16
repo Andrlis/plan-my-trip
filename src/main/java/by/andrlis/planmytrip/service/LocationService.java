@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,6 +48,11 @@ public class LocationService {
 
     public List<LocationCategory> getAllLocationCategories() {
         return locationCategoryRepository.findAll();
+    }
+
+    public List<Location> getMostPopularLocations() {
+    Page<Location> topLocations = locationRepository.findPageableLocations(PageRequest.of(0, 5));
+    return topLocations.getContent();
     }
 
     public List<Country> getAllCountries() {
